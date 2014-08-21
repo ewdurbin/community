@@ -14,7 +14,7 @@ def read(fname):
 
 setup(
     name='community',
-    version='1.0.0a2',
+    version='1.0.0b1',
     license='MIT',
     author="Ernest W. Durbin III",
     author_email='ewdurbin@gmail.com',
