@@ -4,6 +4,16 @@ community
 merge together [wellness](https://github.com/warmwaffles/wellness) compatible
 checks to build a unified view of your conglomerated services
 
+# Routes
+
+- `/health/status`
+
+    returns as wellness does, but does not handle `DEGRADED` status
+
+- `/health/details`
+
+    returns a wellness like `status`, `services`, `details` hash with combined `services` and `details` dictionaries by `name`
+
 # Configuraiton
 
 `community` accepts one and only one environment variable!
