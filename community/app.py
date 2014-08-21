@@ -7,6 +7,7 @@ import requests
 
 from flask import Flask
 from flask import jsonify
+from flask import Response
 
 logger = logging.StreamHandler()
 
@@ -37,8 +38,8 @@ def compute_status():
     for name, health_url in DEPENDENCIES.items():
         status_codes.append(get_status(health_url)[0])
     if max(status_codes) == 500:
-        return 'UNHEALTHY'
-    return 'HEALTHY'
+        return ('UNHEALTHY', max(status_codes))
+    return ('HEALTHY', max(status_codes))
 
 
 def compute_details():
@@ -51,8 +52,8 @@ def compute_details():
         details[name] = info['details']
         services[name] = info['services']
     if max(status_codes) == 500:
-        return 'UNHEALTHY', details, services
-    return 'HEALTHY', details, services
+        return ('UNHEALTHY', details, services, max(status_codes))
+    return ('HEALTHY', details, services, max(status_codes))
 
 
 @APP.route('/', methods=['GET'])
@@ -63,15 +64,17 @@ def root_route():
 
 @APP.route('/health/status')
 def health_status_route():
-    body = {"status": compute_status()}
-    return json.dumps(body).replace(' ', '')
+    (status, status_code) = compute_status()
+    body = {"status": status}
+    return Response(json.dumps(body).replace(' ', ''),
+                    mimetype='application/json'), status_code
 
 
 @APP.route('/health/details')
 def health_details_route():
-    status, details, services = compute_details()
+    (status, details, services, status_code) = compute_details()
     body = {"status": status, "services": services, "details": details}
-    return jsonify(body)
+    return jsonify(body), status_code
 
 
 if __name__ == "__main__":
