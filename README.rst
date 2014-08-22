@@ -1,8 +1,9 @@
 community
 =========
 
-merge together [wellness](https://github.com/warmwaffles/wellness) compatible
-checks to build a unified view of your conglomerated services
+merge together wellness_ compatible checks to build a unified view of your conglomerated services
+
+.. _wellness: https://github.com/warmwaffles/wellness
 
 Routes
 ------
